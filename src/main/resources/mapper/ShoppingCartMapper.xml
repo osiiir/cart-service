@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.osir.cartservice.mapper.ShoppingCartMapper">
+
+
+    <insert id="insert">
+        INSERT INTO shopping_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shoppingCart.name != null and shoppingCart.name!=''">name,</if>
+            <if test="shoppingCart.userId != null">user_id,</if>
+            <if test="shoppingCart.dishId != null">dish_id,</if>
+            <if test="shoppingCart.setmealId != null">setmeal_id,</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">dish_flavor,</if>
+            <if test="shoppingCart.number != null">number,</if>
+            <if test="shoppingCart.amount != null">amount,</if>
+            <if test="shoppingCart.image != null and shoppingCart.image!=''">image,</if>
+            <if test="shoppingCart.createTime != null">create_time,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shoppingCart.name != null and shoppingCart.name!=''">#{shoppingCart.name},</if>
+            <if test="shoppingCart.userId != null">#{shoppingCart.userId},</if>
+            <if test="shoppingCart.dishId != null">#{shoppingCart.dishId},</if>
+            <if test="shoppingCart.setmealId != null">#{shoppingCart.setmealId},</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">#{shoppingCart.dishFlavor},</if>
+            <if test="shoppingCart.number != null">#{shoppingCart.number},</if>
+            <if test="shoppingCart.amount != null">#{shoppingCart.amount},</if>
+            <if test="shoppingCart.image != null and shoppingCart.image!=''">#{shoppingCart.image},</if>
+            <if test="shoppingCart.createTime != null">#{shoppingCart.createTime},</if>
+        </trim>
+
+
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO shopping_cart (name, image, user_id,
+                                   dish_id, setmeal_id, dish_flavor,
+                                   number, amount, create_time)
+        VALUES
+        <foreach collection="shoppingCartList" item="shoppingCart" separator=",">
+            (#{shoppingCart.name}, #{shoppingCart.image}, #{shoppingCart.userId},
+             #{shoppingCart.dishId}, #{shoppingCart.setmealId}, #{shoppingCart.dishFlavor},
+             #{shoppingCart.number}, #{shoppingCart.amount}, #{shoppingCart.createTime})
+        </foreach>
+    </insert>
+
+
+    <update id="updateAddOne">
+        update shopping_cart
+        set number = number + 1
+        <where>
+            <if test="shoppingCart.userId != null">user_id = #{shoppingCart.userId}</if>
+            <if test="shoppingCart.dishId != null">and dish_id = #{shoppingCart.dishId}</if>
+            <if test="shoppingCart.setmealId != null">and setmeal_id = #{shoppingCart.setmealId}</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">and dish_flavor = #{shoppingCart.dishFlavor}</if>
+        </where>
+    </update>
+
+    <update id="updateSubOne">
+        update shopping_cart
+        set number = number - 1
+        <where>
+            <if test="shoppingCart.userId != null">user_id = #{shoppingCart.userId}</if>
+            <if test="shoppingCart.dishId != null">and dish_id = #{shoppingCart.dishId}</if>
+            <if test="shoppingCart.setmealId != null">and setmeal_id = #{shoppingCart.setmealId}</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">and dish_flavor = #{shoppingCart.dishFlavor}</if>
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from shopping_cart
+        <where>
+            <if test="shoppingCart.userId != null">user_id = #{shoppingCart.userId}</if>
+            <if test="shoppingCart.dishId != null">and dish_id = #{shoppingCart.dishId}</if>
+            <if test="shoppingCart.setmealId != null">and setmeal_id = #{shoppingCart.setmealId}</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">and dish_flavor = #{shoppingCart.dishFlavor}</if>
+        </where>
+    </delete>
+
+    <select id="count" resultType="com.osir.takeoutpojo.entity.ShoppingCart">
+        select * from shopping_cart
+        <where>
+            <if test="shoppingCart.userId != null">user_id = #{shoppingCart.userId}</if>
+            <if test="shoppingCart.dishId != null">and dish_id = #{shoppingCart.dishId}</if>
+            <if test="shoppingCart.setmealId != null">and setmeal_id = #{shoppingCart.setmealId}</if>
+            <if test="shoppingCart.dishFlavor != null and shoppingCart.dishFlavor!=''">and dish_flavor = #{shoppingCart.dishFlavor}</if>
+        </where>
+    </select>
+</mapper>

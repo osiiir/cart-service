@@ -1,0 +1,32 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: cart-service
+  profiles:
+    active: dev
+  config:
+    import: nacos:request_deliver.yml?group=common
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      config:
+        # 指定命名空间
+        namespace: dev
+        import-check:
+          enabled: false
+  datasource:
+    driver-class-name: ${osir.datasource.driver-class-name}
+    url: ${osir.datasource.url}
+    username: ${osir.datasource.username}
+    password: ${osir.datasource.password}
+
+# mybatis相关配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.osir.takeoutpojo.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
