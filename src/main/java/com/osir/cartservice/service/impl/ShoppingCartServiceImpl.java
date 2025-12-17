@@ -12,6 +12,7 @@ import com.osir.takeoutpojo.vo.SetmealVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     // TODO 添加到购物车的商品都要检查是否还在售卖
     //    用户通过再来一单，可能可以把停售的商品添加到购物车
+    @Transactional(rollbackFor = Exception.class)
     public void add(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = new ShoppingCart();
 
@@ -88,6 +90,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      * @param shoppingCartList
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertBatch(List<ShoppingCart> shoppingCartList) {
         shoppingCartMapper.insertBatch(shoppingCartList);
     }
@@ -104,6 +107,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      * 减少菜品或套餐的购物车
      * @param shoppingCartDTO
      */
+    @Transactional(rollbackFor = Exception.class)
     public void sub(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = ShoppingCart.builder()
                 .userId(LoginUserContext.getUserId())
@@ -124,6 +128,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     /**
      * 清空购物车
      */
+    @Transactional(rollbackFor = Exception.class)
     public void clean() {
         shoppingCartMapper.cleanByUserId(LoginUserContext.getUserId());
     }
